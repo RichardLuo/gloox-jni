@@ -33,6 +33,14 @@ extern "C" {
 JNIEXPORT jint JNICALL Java_com_xlive_client_XmppClient_register_1user
   (JNIEnv *, jclass, jstring, jstring, jstring);
 
+/*
+ * Class:     com_xlive_client_XmppClient
+ * Method:    send_xmpp_info
+ * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;IZ)I
+ */
+JNIEXPORT void JNICALL Java_com_xlive_client_XmppClient_send_1xmpp_1info
+  (JNIEnv *, jclass, jstring, jstring, jstring, jint, jboolean);
+
 #ifdef __cplusplus
 }
 #endif
