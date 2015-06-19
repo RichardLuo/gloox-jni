@@ -14,7 +14,6 @@ class Register : public gloox::RegistrationHandler, gloox::ConnectionListener, g
     Register(std::string& server) : m_server(server) {}
     virtual ~Register() {}
 
-    void start();
     int addAccount(const std::string& username, const std::string& password);
     // ConnectionListener
     virtual void onConnect();

@@ -20,27 +20,10 @@ using namespace gloox;
 
 #include <cstdio> // [s]print[f]
 
-void Register::start()
-{
-    j = new Client(m_server);
-    j->disableRoster();
-    j->registerConnectionListener(this);
-
-    m_reg = new Registration(j);
-    m_reg->registerRegistrationHandler(this);
-
-    j->logInstance().registerLogHandler(LogLevelDebug, LogAreaAll, this);
-
-    j->connect();
-
-    delete(m_reg);
-    delete(j);
-}
-
 int Register::addAccount(const std::string& username, const std::string& password)
 {
     j = new Client(m_server);
-    LOGFL("username: %s, password: %s", username.c_str(), password.c_str());
+    LOGFL("addAccount username: %s, password: %s", username.c_str(), password.c_str());
     m_user_name = username;
     m_password = password;
     j->disableRoster();
@@ -60,12 +43,13 @@ int Register::addAccount(const std::string& username, const std::string& passwor
 
 void Register::onConnect()
 {
+    LOGFL("onConnect, about to fectchRegistrationFields");
     m_reg->fetchRegistrationFields();
 }
 
 void Register::onDisconnect(ConnectionError e)
 {
-    LOGFL("register_test: disconnected: %d\n", e);
+    LOGFL("register_test: disconnected\n");
 }
 
 bool Register::onTLSConnect(const CertInfo& info)
@@ -77,9 +61,8 @@ bool Register::onTLSConnect(const CertInfo& info)
     return true;
 }
 
-void Register::handleRegistrationFields(const JID& /*from*/, int fields, std::string instructions)
+void Register::handleRegistrationFields(const JID& from, int fields, std::string instructions)
 {
-    LOGFL("fields: %d\ninstructions: %s\n", fields, instructions.c_str());
     RegistrationFields vals;
     vals.username = m_user_name;
     vals.password = m_password;
