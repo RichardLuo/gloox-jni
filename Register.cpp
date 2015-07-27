@@ -26,6 +26,7 @@ int Register::addAccount(const std::string& username, const std::string& passwor
     LOGFL("addAccount username: %s, password: %s", username.c_str(), password.c_str());
     m_user_name = username;
     m_password = password;
+    m_result = gloox::RegistrationUnknownError;
     j->disableRoster();
     j->registerConnectionListener(this);
 
@@ -34,7 +35,10 @@ int Register::addAccount(const std::string& username, const std::string& passwor
 
     j->logInstance().registerLogHandler(LogLevelDebug, LogAreaAll, this);
 
-    j->connect();
+    if(!j->connect()) {
+        LOGFL("gloox Client connect failed");
+    }
+    LOGFL("gloox Client connect result: %d", m_result);
 
     delete(m_reg);
     delete(j);
